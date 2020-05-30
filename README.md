@@ -15,6 +15,7 @@
 	* [Creating a Tomcat server](#4-creating-tomcat-server-in-docker-container)
 	* [Running jenkins in docker via docker compose](#5-running-jenkins-as-container)
 	* [Running MYSQL in container via docker-compose](#6-running-mysql-in-docker)
+	* [install AWS CLI and mysql Client on docker](#)
 6. [Data Containers](#6-data-containers)
 7. [Managin Data in Docker](#7-managing-data-in-docker)
 	* [Docker Bind Mounts](#1-docker-bind-mounts)
@@ -412,7 +413,48 @@ https://hub.docker.com/_/mysql
  show databases;
  ```
  ![show databases](https://github.com/jawad1989/Jenkins101/blob/master/images/5-show%20databases.PNG)
+ 
+### 7. install AWS CLI and mysql Client on docker
+  1. update `Dockerfile` in `centos` directory for `remote_host`
+  
+  ```
+  FROM centos
 
+RUN yum -y install openssh-server
+
+RUN useradd remote_user && \
+    echo "remote_user:1234" | chpasswd && \
+    mkdir /home/remote_user/.ssh && \
+    chmod 700 /home/remote_user/.ssh
+
+COPY remote-key.pub /home/remote_user/.ssh/authorized_keys
+
+RUN chown remote_user:remote_user -R /home/remote_user/.ssh/ &&\
+    chmod 600 /home/remote_user/.ssh/authorized_keys
+
+#RUN /usr/sbin/sshd-keygen
+RUN ssh-keygen -A && rm -rf /run/nologin
+
+#intall mysql
+RUN yum -y install mysql
+
+# install AWS CLI
+RUN yum -y install epel-release && \
+    yum -y install python3-pip && \
+    pip3 install --upgrade pip && \
+    pip3 install awscli
+
+CMD /usr/sbin/sshd -D
+
+  ```
+  
+  2. build `docker-compose build`  and run the container `docker-compose up -d`
+  3. exec into remote_hose and verify aws/mysal
+  ```
+  docker exec -ti remote_host bash
+  aws
+  mysql
+  ```
 # 6. Data Containers
 
 Data containers are containers whose sole responsibility is to be a place to store/manage data.
