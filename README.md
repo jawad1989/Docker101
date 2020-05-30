@@ -382,7 +382,36 @@ networks:
  
  ![jenkins installed](https://github.com/jawad1989/Jenkins101/blob/master/images/10%20-jenknis.PNG)
  
- 
+### 6. Running MYSQL in docker
+
+https://hub.docker.com/_/mysql
+
+1. Create/update `docker-compole.yml`
+  ***MYSQL_ROOT_PASSWORD*** is required by mysql image, you can check in mysql image link provided above. Also mysql volume location would be `/var/lib/mysql` also can be verified in above link.
+  
+ ```
+ db_host: 
+    container_name: mysql
+    image: mysql:5.7
+    environment: 
+      - "MYSQL_ROOT_PASSWORD=1234"
+    volumes: 
+      - "$PWD/db_data:/var/lib/mysql"
+ ```
+2. start docker-compose by running `docker-compose up -d`
+3. run `docker ps` to verify
+4. check if mysql is up and runnin by running `docker logs -f <container_name>`
+5. login into mysql 
+ ```
+ docker exec -ti mysql bash
+ ```
+6. connect mysql using user `root` and password `1234` as given in docker-compose file and run `show databases`
+ ```
+ mysql -u root -p
+ show databases;
+ ```
+ ![show databases](https://github.com/jawad1989/Jenkins101/blob/master/images/5-show%20databases.PNG)
+
 # 6. Data Containers
 
 Data containers are containers whose sole responsibility is to be a place to store/manage data.
