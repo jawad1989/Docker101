@@ -34,7 +34,94 @@
 
 9. [Sharing Images on Docker Hub](#9-share-your-images-on-docker-hub)
 10. [Useful commands](#10-useful-commands)
-	
+# Get Docker
+You can either follow docker documentation for downloading docker or get it from 'get.docker.com' whcih we will do, this is a better way to get docker:
+
+goto https://get.docker.com/
+
+and run below commands in your terminal
+```
+# This script is meant for quick & easy install via:
+#   $ curl -fsSL https://get.docker.com -o get-docker.sh
+#   $ sh get-docker.sh
+```
+once done, run docker version
+```
+docker version
+Client: Docker Engine - Community
+ Version:           19.03.11
+ API version:       1.40
+ Go version:        go1.13.10
+ Git commit:        42e35e61f3
+ Built:             Mon Jun  1 09:12:22 2020
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          19.03.11
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.13.10
+  Git commit:       42e35e61f3
+  Built:            Mon Jun  1 09:10:54 2020
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.2.13
+  GitCommit:        7ad184331fa3e55e52b890ea95e65ba581ae3429
+ runc:
+  Version:          1.0.0-rc10
+  GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd
+ docker-init:
+  Version:          0.18.0
+  GitCommit:        fec3683
+ 
+ Adding a user to the "docker" group will grant the ability to run
+ containers which can be used to obtain root privileges on the
+ docker host
+```
+
+add your user to docker 
+```
+sudo usermod -aG docker jawad
+```
+
+# Get Docker Machine 
+
+install docker machine by going to below link
+
+https://docs.docker.com/machine/install-machine/
+
+```
+$ base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+  sudo mv /tmp/docker-machine /usr/local/bin/docker-machine &&
+  chmod +x /usr/local/bin/docker-machine
+  
+jawad@DockerLab:~$ docker-machine version
+docker-machine version 0.16.0, build 702c267f
+
+```
+
+# Get Docker Compose
+
+https://docs.docker.com/compose/install/
+
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+$docker-compose version
+docker-compose version 1.26.0, build d4451659
+docker-py version: 4.2.1
+CPython version: 3.7.7
+OpenSSL version: OpenSSL 1.1.0l  10 Sep 2019
+
+```
+alternatively you can get the release from github
+https://github.com/docker/compose/releases
+
 # 1. Introduction to Docker 
 
 ## What is a Container
