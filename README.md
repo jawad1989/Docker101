@@ -163,7 +163,10 @@ docker ps
   CONTAINER ID     IMAGE           COMMAND      CREATED            STATUS
   54f4984ed6a8     hello-world     "/hello"     20 seconds ago     Exited (0) 19 seconds ago
 ```
-
+## Running a Simple NGINX Server
+```
+docker container run --publish 80:80 --name webhost -d nginx -T
+```
 # 3. Dockerfile 
 
 Docker builds images automatically by reading the instructions from a Dockerfile -- a text file that contains all commands, in order, needed to build a given image. A Dockerfile adheres to a specific format and set of instructions which you can find at Dockerfile reference.
