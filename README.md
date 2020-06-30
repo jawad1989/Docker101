@@ -34,6 +34,7 @@
 
 9. [Sharing Images on Docker Hub](#9-share-your-images-on-docker-hub)
 10. [Useful commands](#10-useful-commands)
+11. Docker Book For Virtulization Admins
 # Get Docker
 You can either follow docker documentation for downloading docker or get it from 'get.docker.com' whcih we will do, this is a better way to get docker:
 
@@ -167,6 +168,32 @@ docker ps
 ```
 docker container run --publish 80:80 --name webhost -d nginx -T
 ```
+## run mongo DB
+```
+docker run --name mongo -d mongo
+```
+
+## install mysql 
+```
+docker container run -d -p 3306:3306 --name db -e MYSQL_RANDOM_ROOT_PASSWORD=yes mysql
+```
+get root password from logs
+```
+docker cotainer logs db
+
+2020-06-30 17:55:47+00:00 [Note] [Entrypoint]: GENERATED ROOT PASSWORD: mieM6engool7ieho7uiyeet0ziewaede
+```
+
+## install httpd
+```
+docker container run -d --name webserver -p 8080:80 httpd
+```
+
+## install nginx
+```
+docker container run -d --name proxy -p 80:80 nginx
+```
+
 # 3. Dockerfile 
 
 Docker builds images automatically by reading the instructions from a Dockerfile -- a text file that contains all commands, in order, needed to build a given image. A Dockerfile adheres to a specific format and set of instructions which you can find at Dockerfile reference.
@@ -878,3 +905,23 @@ You can use the docker stats command to live stream a container’s runtime metr
 ```
 docker stats redis1 redis2
 ```
+
+# 11. Docker Book For Virtulization Admins
+https://github.com/mikegcoleman/docker101/blob/master/Docker_eBook_Jan_2017.pdf
+
+# 12. Window Containers
+Today Docker is much more than Linux. When you think of images, which are kernel specific, we're now talking about Linux x64, Linux x86 (32-bit), Windows 64bit, and a bunch more. This course still largely focuses on Linux x64 images because 90% of the concepts are the same, but "Windows Containers" are the new hotness! Technically, they are Native Windows .exe binaries running in Docker containers on a Windows kernel, and have no Linux installed.
+
+Windows Containers and Docker 101 [Youtube]
+
+Windows and Linux Parity with Docker [Youtube]
+
+Docker + Microsoft - Investing in the Future of your Applications [Youtube]
+
+# 13. Monitoring container
+
+docker container top <container_name> - process list in one container
+
+docker container inspect <container_name> - details of container config
+
+docker container top <container_name> - performance stats of container
