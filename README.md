@@ -35,6 +35,8 @@
 9. [Sharing Images on Docker Hub](#9-share-your-images-on-docker-hub)
 10. [Useful commands](#10-useful-commands)
 11. Docker Book For Virtulization Admins
+12. Monitor Docker Container 
+
 # Get Docker
 You can either follow docker documentation for downloading docker or get it from 'get.docker.com' whcih we will do, this is a better way to get docker:
 
@@ -924,4 +926,6 @@ docker container top <container_name> - process list in one container
 
 docker container inspect <container_name> - details of container config
 
-docker container top <container_name> - performance stats of container
+docker container stats <container_name> - performance stats of container
+
+docker container stats - performance stats of all containers ( LIVE )
