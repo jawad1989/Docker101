@@ -36,6 +36,7 @@
 10. [Useful commands](#10-useful-commands)
 11. Docker Book For Virtulization Admins
 12. Monitor Docker Container 
+13. Getting a Shell in Container 
 
 # Get Docker
 You can either follow docker documentation for downloading docker or get it from 'get.docker.com' whcih we will do, this is a better way to get docker:
@@ -196,6 +197,13 @@ docker container run -d --name webserver -p 8080:80 httpd
 docker container run -d --name proxy -p 80:80 nginx
 ```
 
+## install alpine
+```
+docker container run -d --name alpineServer -p 8081:80 alpine
+
+#to sh into new container
+docker container run -it alpine sh
+```
 # 3. Dockerfile 
 
 Docker builds images automatically by reading the instructions from a Dockerfile -- a text file that contains all commands, in order, needed to build a given image. A Dockerfile adheres to a specific format and set of instructions which you can find at Dockerfile reference.
@@ -693,6 +701,40 @@ connect to 2nd container to see the file if created, you can sh the container an
 
 
 # 8. Docker Networking
+
+> "Battries Included, But Removeable" - Default works well in many cases, but you can change to customize
+
+### Docker Network Default:
+1. Bridge network
+2. All containers on Virtual network can talk to each other without -p
+3. Each Virtual Network routes through NAT firewall on host IP
+
+if we run ipconfig we will see docker0/bridge network that has some IP range inet 127.0.0.1/8 when ever we add more containers it picks one ip from the pool and extends. e.g. if we run a webserver http it will be 127.0.0.2 and another container nginx would be 127.0.0.3
+
+```
+jawad@DockerLab:~/code/hw/manageContainer$ docker container inspect --format '{{.NetworkSettings.IPAddress}}' db
+172.17.0.3
+
+jawad@DockerLab:~/code/hw/manageContainer$ docker container inspect --format '{{.NetworkSettings.IPAddress}}' webserver
+172.17.0.2
+
+jawad@DockerLab:~/code/hw/manageContainer$ ifconfig
+docker0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+
+```
+
+if we create one more network, the containers in this network will extend ip CIDR/Range from this network
+
+### Best Practices:
+
+To create a new virtual network for each app:
+
+1. Network "my_web_app" for mysql and php/apache containers
+2. Network "my_api" for mongo and nodejs containers
+
+## Traffic Flows and Firewalls
+How docker networks move packets in and out
 Docker’s networking subsystem is pluggable, using drivers. Several drivers exist by default, and provide core networking functionality:
 
 * **User-defined bridge networks** are best when you need multiple containers to communicate on the same Docker host.
@@ -721,6 +763,7 @@ Some applications, especially legacy applications or applications which monitor 
 [Overlay Network Guide](https://docs.docker.com/network/network-tutorial-macvlan/)
 
 ### 4. Bridge Network
+
 **Networking with standalone containers**
 #### Use the default bridge network
 demonstrates how to use the default bridge network that Docker sets up for you automatically. This network is not the best choice for production systems.
@@ -908,6 +951,22 @@ You can use the docker stats command to live stream a container’s runtime metr
 docker stats redis1 redis2
 ```
 
+
+Get IP for container
+```
+docker container inspect --format '{{.NetworkSettings.IPAddress}}' webserver
+Output: 172.17.0.2
+```
+
+Get Port details for container
+```
+docker container port webserver
+Output: 80/tcp -> 0.0.0.0:8080
+```
+
+### formats docker
+https://docs.docker.com/config/formatting/
+
 # 11. Docker Book For Virtulization Admins
 https://github.com/mikegcoleman/docker101/blob/master/Docker_eBook_Jan_2017.pdf
 
@@ -929,3 +988,20 @@ docker container inspect <container_name> - details of container config
 docker container stats <container_name> - performance stats of container
 
 docker container stats - performance stats of all containers ( LIVE )
+
+
+# 13. Getting a Shell in Container
+
+1 Run Command
+```
+docker containe run -it
+docker container run -it --name ubuntu ubuntu
+docker container run -it alpine bash # wont work as bash is not cnfigured in alpine
+docker container run -it alpine sh
+```
+
+2. Exec Command
+```
+docker container exec -it
+docker container exec -it mysql bash
+```
