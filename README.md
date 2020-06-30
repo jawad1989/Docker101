@@ -709,7 +709,7 @@ connect to 2nd container to see the file if created, you can sh the container an
 2. All containers on Virtual network can talk to each other without -p
 3. Each Virtual Network routes through NAT firewall on host IP
 
-if we run ipconfig we will see docker0/bridge network that has some IP range inet 127.0.0.1/8 when ever we add more containers it picks one ip from the pool and extends. e.g. if we run a webserver http it will be 127.0.0.2 and another container nginx would be 127.0.0.3
+if we run ipconfig we will see docker0/bridge network that has a subnet CIDR 127.0.0.1/8 when ever we add more containers it picks one ip from the subnet list and extends. e.g. if we run a webserver http it will be 127.0.0.2 and another container nginx would be 127.0.0.3
 
 ```
 jawad@DockerLab:~/code/hw/manageContainer$ docker container inspect --format '{{.NetworkSettings.IPAddress}}' db
@@ -723,8 +723,36 @@ docker0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
 
 ```
-
 if we create one more network, the containers in this network will extend ip CIDR/Range from this network
+
+### list networks
+docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+67acf5688fc2        bridge              bridge              local
+7a67397d89d0        host                host                local # gains performace by skipping virutal networks but sacrificies security of container model
+134bc1956c5f        none                null                local # removes etho2 and only leaves you with localost interface in container
+
+### inspect network
+docker network inspect bridge
+
+### create network
+
+docker network create my_app_network
+
+### add new container into your network
+docker container run -d --name new_httpd -p 8084:80 --network my_app_network
+
+### add existing container to network
+docker network connect my_network webserver
+
+### disconnect container from network
+docker network disconnect my_network webserver
+
+## Docker Network DNS
+You  can have multiple containers to be able to communicate with each other on the same docker host of your bridge network `my_network`, by using ping against their hostnames
+```
+docker exec -it webserver ping nginx
+```
 
 ### Best Practices:
 
@@ -963,6 +991,12 @@ Get Port details for container
 docker container port webserver
 Output: 80/tcp -> 0.0.0.0:8080
 ```
+
+docker container run --rm -it centos:7 bash
+
+docker container run --rm -it ubuntu:14.04
+
+
 
 ### formats docker
 https://docs.docker.com/config/formatting/
