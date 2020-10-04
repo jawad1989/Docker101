@@ -997,6 +997,16 @@ docker container run --rm -it centos:7 bash
 docker container run --rm -it ubuntu:14.04
 
 
+Entry Point
+
+docker run ubuntu-js 10, this will overwrite 5 value of CMd, if no value is given i.e. docker run ubuntu-js then it will sleep for 5 seconds
+```
+dockerfile
+
+FROM ubuntu
+ENTRYPOINT ["sleep"]
+CMD ["5"]
+```
 
 ### formats docker
 https://docs.docker.com/config/formatting/
