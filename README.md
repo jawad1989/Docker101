@@ -1008,6 +1008,21 @@ ENTRYPOINT ["sleep"]
 CMD ["5"]
 ```
 
+Docker file to run python project
+```
+FROM python:3.6-alpine
+
+RUN pip install flask
+
+COPY . /opt/
+
+EXPOSE 8080
+
+WORKDIR /opt
+
+ENTRYPOINT ["python", "app.py"]
+```
+
 ### formats docker
 https://docs.docker.com/config/formatting/
 
