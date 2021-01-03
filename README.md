@@ -932,6 +932,14 @@ You can pull using below command in any of your enviornment:
 
 ## 10. Useful Commands
 
+current path as a bind volume
+
+lets assume current directory has html code,this command will help us to make live changes
+```
+docker run -d -p 80:80 -v $(pwd):/usr/share/nginx/html nginx
+
+```
+docker run -d -p 8080:80 -v ${pwd}--name nginx-volume nginx
 interactive shell contianer using image
 ```
 docker run -it image_name sh
