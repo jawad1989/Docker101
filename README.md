@@ -87,7 +87,8 @@ Server: Docker Engine - Community
 
 add your user to docker 
 ```
-sudo usermod -aG docker jawad
+sudo groupadd docker
+sudo usermod -aG docker $USER
 ```
 
 # Get Docker Machine 
